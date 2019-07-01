@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+
+#define TAM 100
+
+int main(){
+    setlocale(LC_ALL, "Portuguese");
+    int linha, coluna, matriz[TAM][TAM], dp, ds, vetLinhas[TAM], vetColunas[TAM];
+    int testaLinha = 1, testaColuna = 1;
+    int i, j;
+
+//recebe o tamanho da matriz
+    printf("Quantidade de linhas:");
+    scanf("%d", &linha);
+    printf("Quantidade de colunas:");
+    scanf("%d", &coluna);
+    while(linha < 3 || linha > 4 || coluna < 3 || coluna > 4 || linha != coluna){
+        printf("Erro! Entre com uma matriz 3x3 ou 4x4!");
+        scanf("%d", &linha);
+        scanf("%d", &coluna);
+    }
+//recebe os elementos da matriz escolhida
+    printf("Digite os elementos da matriz:\n");
+    for(i = 0; i < linha; i++){
+        for(j = 0; j < coluna; j++){
+            printf("Elemento m[%d][%d]:", i, j);
+            scanf("%d", &matriz[i][j]);
+        }
+    }
+//calcular diagonal principal
+    dp = 0;
+    for(i = 0; i < linha; i++){
+        dp += matriz[i][i];
+        
+    }
+    printf("Diagonal Principal: %d \n", dp);
+//calcular diagonal secundária
+    ds = 0;
+    for(i = 0; i < linha; i++){
+        ds += matriz[i][linha - 1 - i];
+   	}
+    printf("Diagonal Secundária: %d", ds);
+//calcular linhas
+    printf("\nSoma das linhas: ");
+    for (i = 0; i < linha; i++) {
+        vetLinhas[i] = 0;
+        for (j = 0; j < coluna; j++) {
+            vetLinhas[i] += matriz[i][j];
+        }
+    }
+    for (i = 0; i < linha; i++) {
+        printf("%d\t", vetLinhas[i]);
+    }
+//calcular colunas
+    printf("\nSoma das colunas: ");
+    for (j = 0; j < coluna; j++) {
+        vetColunas[j] = 0;
+        for (i = 0; i < linha; i++) {
+            vetColunas[j] += matriz[i][j];
+        }
+    }
+    for (i = 0; i < linha; i++) {
+        printf("%d\t", vetColunas[i]);
+    }
+//testar se é quadrado mágico ou não
+    for (i = 1; i < linha; i++) {
+        if (vetLinhas[i] != vetLinhas[i-1]) {
+            testaLinha = 0;
+            break;
+        } else if (vetColunas[i] != vetColunas[i-1]) {
+            testaColuna = 0;
+            break;
+        }
+    }
+//junta os resultados e testa se as linhas, colunas, diagonal principal e secundaria são iguais
+    if (testaLinha && testaColuna && dp == ds && dp == vetLinhas[0]) {
+        printf("\nÉ um quadrado mágico\n");
+    } else {
+        printf("\nNão é um quadrado mágico\n");
+    }
+    return 0;
+}
